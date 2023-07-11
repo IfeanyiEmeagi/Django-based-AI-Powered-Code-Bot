@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="col-md-10 offset-md-1">
+{% if response %}
+
+<h3>AI Powered CodeBot</h3>
+<pre>
+<code class="line-numbers language-{{ lang }}">
+{{ response }}
+</code>
+</pre>
+
+<br/>
+<form method="POST" action="{% url 'suggest' %}">
+    {% csrf_token %}
+  <div class="mb-3">
+    <textarea class="form-control" name="message" placeholder="Narrate your task for AI powered code suggestion in your language of choice." rows="3"> {{ code }}</textarea>
+  </div>
+  <select class="form-select form-select-sm" name="lang" aria-label=".form-select-sm example">
+    <option selected>Select Programming Language</option>
+   {% for lang in language_list %}
+    <option value="{{ lang }}">{{ lang | title }}</option>
+    {% endfor %}
+  </select>
+<br/>
+  <button type="submit" class="btn btn-secondary">Submit</button>
+</form>
+
+{% else %}
+
+<h3>AI Powered CodeBot</h3>
+<pre>
+<code class="line-numbers language-python">
+<p>code screen...</p>
+</code>
+</pre>
+<br/>
+<form method="POST" action="{% url 'suggest' %}">
+    {% csrf_token %}
+  <div class="mb-3">
+    <textarea class="form-control" name="message" placeholder="Narrate your task for AI powered code suggestion in your language of choice." rows="3"></textarea>
+  </div>
+  <select class="form-select form-select-sm" name="lang" aria-label=".form-select-sm example">
+    <option selected>Select Programming Language</option>
+   {% for lang in language_list %}
+    <option value="{{ lang }}">{{ lang | title }}</option>
+    {% endfor %}
+  </select>
+<br/>
+  <button type="submit" class="btn btn-secondary">Submit</button>
+</form>
+
+{% endif %}
+
+
+{% else %}
+
+<div class="col-md-6 offset-md-3">
+    <h3>Login</h3>
+    <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Enter Username" name="username">
+            <br/>
+        </div>
+
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="Enter Password" name="password">
+            <br/>
+        </div>
+
+        <button type="submit" class="btn btn-secondary">Login</button>
+        <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+
+    </form>
+</div>
+</div>
+
+{% endif %}
+
+{% endblock %} 

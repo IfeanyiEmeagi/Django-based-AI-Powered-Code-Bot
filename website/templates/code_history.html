@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-10 offset-md-1">
+<h3> Code History</h3>
+{% if codes %}
+{% for item in codes %}
+ <strong>Prompt: </strong>  {{ item.question }}
+<br/>    
+<pre>
+<code class="line-numbers language-{{ item.language }}">
+{{ item.code_response }}
+
+</code>
+</pre>
+<a href="{% url 'delete_history' item.id %}" class="btn btn-outline-danger">Delete</a>
+<br/>
+</br>
+{% endfor %}
+{% else %}
+<br/>
+<p>You do have code history yet.</p>
+
+</div>
+{% endif %}
+{% endblock %}
